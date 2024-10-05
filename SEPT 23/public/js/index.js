@@ -24,3 +24,10 @@ my_form.addEventListener('submit', (e) => {
     const data = Object.fromEntries(form_data);
     sendData(data, 'POST');
 });
+
+document.getElementById('update_button').addEventListener('click', (e) => {
+    e.preventDefault();
+    const form_data = new FormData(my_form);
+    const data = Object.fromEntries(form_data);
+    sendData(data, 'PUT');
+});

@@ -26,6 +26,22 @@ product_routes.route("/")
         products.push(newProduct);
         res.status(201).json(newProduct);
     })
+    .put((req, res) => {
+        const { id } = req.body;
+        const { name, price } = req.body;
+        const product = products.find((p) => p.id === parseInt(id));
+    
+        if (product) {
+            product.name = name;
+            product.price = parseFloat(price);
+            res.json({ status: 'success', product });
+        } else {
+            res.status(404).json({
+                status: 'error',
+                message: 'Product not found',
+            });
+        }
+    });
 
 
 product_routes.get('/view', (req, res) =>{
