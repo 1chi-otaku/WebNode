@@ -41,6 +41,17 @@ product_routes.route("/")
                 message: 'Product not found',
             });
         }
+    })
+    .delete((req, res) => {
+        const { id } = req.body;
+        const index = products.findIndex((p) => p.id === parseInt(id));
+    
+        if (index !== -1) {
+            const deletedProduct = products.splice(index, 1);
+            res.json({ status: 'success', product: deletedProduct });
+        } else {
+            res.status(404).json({ status: 'error', message: 'Product not found' });
+        }
     });
 
 

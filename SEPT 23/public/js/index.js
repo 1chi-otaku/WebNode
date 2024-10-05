@@ -31,3 +31,10 @@ document.getElementById('update_button').addEventListener('click', (e) => {
     const data = Object.fromEntries(form_data);
     sendData(data, 'PUT');
 });
+
+document.getElementById('delete_button').addEventListener('click', (e) => {
+    e.preventDefault();
+    const form_data = new FormData(my_form);
+    const data = Object.fromEntries(form_data);
+    sendData(data, 'DELETE');
+});
