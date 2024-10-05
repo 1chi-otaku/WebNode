@@ -1,5 +1,0 @@
-GET http://localhost:3000 HTTP/1.1
-
-GET http://localhost:3000/products HTTP/1.1
-
-GET http://localhost:3000/products/1 HTTP/1.1
