@@ -1,4 +1,6 @@
 const my_form = document.getElementById("new_product");
+const update_button = document.getElementById("update_button");
+const delete_button = document.getElementById("delete_button");
 
 const HOST = window.location.href;
 
@@ -25,14 +27,14 @@ my_form.addEventListener('submit', (e) => {
     sendData(data, 'POST');
 });
 
-document.getElementById('update_button').addEventListener('click', (e) => {
+update_button.addEventListener('click', (e) => {
     e.preventDefault();
     const form_data = new FormData(my_form);
     const data = Object.fromEntries(form_data);
     sendData(data, 'PUT');
 });
 
-document.getElementById('delete_button').addEventListener('click', (e) => {
+delete_button.addEventListener('click', (e) => {
     e.preventDefault();
     const form_data = new FormData(my_form);
     const data = Object.fromEntries(form_data);

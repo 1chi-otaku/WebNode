@@ -55,11 +55,11 @@ product_routes.route("/")
     });
 
 
-product_routes.get('/view', (req, res) =>{
+product_routes.get('/list', (req, res) =>{
     res.json(products);
 });
 
-product_routes.get('/view/:id', (req, res) => {
+product_routes.get('/list/:id', (req, res) => {
     const { id } = req.params;
     res.json(products.find((p) => p.id === parseInt(id)));
 });
