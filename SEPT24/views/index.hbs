@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="text-center mb-4">{{title}}</h1>
+
+        <div class="text-center mb-4">
+            <p>Welcome to Node JS Server</p>
+        </div>
+
+
+        <h2 class="text-center mb-4">My Programming Skills</h2>
+        <ul class="list-group">
+            {{#each skills}}
+                <li class="list-group-item">{{title}}</li>
+            {{/each}}
+        </ul>
+    </div>
+
+</body>
+</html>
