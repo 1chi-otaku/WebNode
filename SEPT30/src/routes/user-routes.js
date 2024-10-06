@@ -14,30 +14,40 @@ userRoutes.get("/user/signup", (req, res) => {
     res.render("form_register");
 });
 
+userRoutes.get("/users", (req, res) => {
+    res.json(users);
+});
+
 userRoutes.post("/user/signup", async (req, res) => {
     const { login, email, password, confirm_password } = req.body;
-    let errors = [];
+
+    let isError = false;
 
     if (!validator.isEmail(email)) {
-        errors.push("Invalid email format.");
+        console.warn("Invalid email format.");
+        isError = true;
     }
     if (!validator.isLength(password, { min: 6 })) {
-        errors.push("Password must be at least 6 characters long.");
+        console.warn("Password must be at least 6 characters long.");
+        isError = true;
     }
     if (password !== confirm_password) {
-        errors.push("Passwords do not match.");
+        console.warn("Passwords do not match.");
+        isError = true;
     }
     if (!validator.isAlphanumeric(login)) {
-        errors.push("Login must contain only letters and numbers.");
+        console.warn("Login must contain only letters and numbers.");
+        isError = true;
     }
 
     const existingUser = users.find(user => user.email === email);
     if (existingUser) {
-        errors.push("Email is already registered.");
+        console.warn("Email is already registered.");
+        isError = true;
     }
 
-    if (errors.length > 0) {
-        return res.status(400).render("form_register", { errors, login, email });
+    if (isError) {
+        return res.status(400).render("form_register");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -52,6 +62,11 @@ userRoutes.post("/user/signup", async (req, res) => {
     res.redirect("/");
 
     console.log(users);
+});
+
+userRoutes.get("/user/logout", (req, res) => {
+    res.clearCookie("user");
+    res.redirect("/");
 });
 
 userRoutes.get("/user/logout", (req, res) => {
