@@ -19,9 +19,12 @@ const server = express();
 server.use(express.json());
 server.use(cookieParser());
 server.use(session({
-    secret: process.env.SESSION_KEY,
+    secret: process.env.SECRET_KEY ,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie:{
+        maxAge: 1005000,
+    }
 
 }))
 server.use(express.urlencoded({extended: true}));
