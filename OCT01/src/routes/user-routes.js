@@ -1,7 +1,8 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
 import validator from "validator";
-
+import jwt from "jsonwebtoken";
+import secure from "../services/user-secure.js";
 
 
 const userRoutes = Router();
@@ -63,20 +64,29 @@ userRoutes.post("/user/signup", async (req, res) => {
     const newUser = { login, email, password: hashedPassword };
     users.push(newUser);
 
+
     // res.cookie("user", login, {
     //     httpOnly: true,
     //     maxAge: 1005000, 
     // });
 
-    req.session.user = {
-        login:req.body.login,
-        email:req.body.email
-    }
+   const token = secure.generateToken({ login: newUser.login, email: newUser.email });
 
-    res.redirect("/");
+  req.session.user = {
+    login: newUser.login,
+    email: newUser.email,
+    token: token,  
+  };
+
+  res.json({ token: token });
 
     console.log(users);
 });
+
+userRoutes.get("/protected", secure.authenticateToken, (req, res) => {
+    res.json({ message: "You have access to this protected route!", user: req.user });
+});
+
 
 userRoutes.get("/user/logout", (req, res) => {
     req.session.destroy((err) => {
