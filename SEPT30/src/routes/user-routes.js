@@ -1,16 +1,18 @@
 import { Router } from "express";
 import bcrypt from "bcrypt";
 import validator from "validator";
+import redirectIfAuthenticated from "../middleware/redirectIfAuthenticated.js";
+
 
 const userRoutes = Router();
 
 const users = [];
 
-userRoutes.get("/user/signin", (req, res) => {
+userRoutes.get("/user/signin", redirectIfAuthenticated, (req, res) => {
     res.render("form_auth");
 });
 
-userRoutes.get("/user/signup", (req, res) => {
+userRoutes.get("/user/signup", redirectIfAuthenticated,  (req, res) => {
     res.render("form_register");
 });
 
@@ -55,23 +57,31 @@ userRoutes.post("/user/signup", async (req, res) => {
     const newUser = { login, email, password: hashedPassword };
     users.push(newUser);
 
-    res.cookie("user", login, {
-        httpOnly: true,
-        maxAge: 1005000, 
-    });
+    // res.cookie("user", login, {
+    //     httpOnly: true,
+    //     maxAge: 1005000, 
+    // });
+
+    req.session.user = {
+        login:req.body.login,
+        email:req.body.email
+    }
+
     res.redirect("/");
 
     console.log(users);
 });
 
 userRoutes.get("/user/logout", (req, res) => {
-    res.clearCookie("user");
-    res.redirect("/");
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error destroying session:", err);
+            return res.status(500).send("Error logging out");
+        }      
+        res.clearCookie("connect.sid");
+        res.redirect("/");
+    });
 });
 
-userRoutes.get("/user/logout", (req, res) => {
-    res.clearCookie("user");
-    res.redirect("/");
-});
 
 export default userRoutes;
