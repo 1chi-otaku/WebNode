@@ -19,7 +19,7 @@ const server = express();
 server.use(express.json());
 server.use(cookieParser());
 server.use(session({
-    secret: process.env.SECRET_KEY ,
+    secret: process.env.SESSION_KEY ,
     resave: false,
     saveUninitialized: false,
     cookie:{
@@ -29,6 +29,9 @@ server.use(session({
 }))
 server.use(express.urlencoded({extended: true}));
 server.use(express.static("public"));
+server.use(express.static("photos"));
+server.use('/SEPT30/photos', express.static(path.join(process.cwd(), 'photos')));
+server.use(express.static("photos"));
 server.use(checkUser);
 
 server.engine("hbs", hbs.engine);

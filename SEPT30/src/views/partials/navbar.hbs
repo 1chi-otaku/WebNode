@@ -32,6 +32,12 @@
         {{/if}}
       
     </div>
-    {{#if user}}<div>Hello {{user}}! Your Email is {{email}} <a href="/user/logout">Logout</a></div>{{/if}}
+     
+   {{#if user}}
+   <img src="/SEPT30{{photo}}" alt="User photo" width="50" height="50">
+    <div>Hello {{user}}! Your Email is {{email}} <a href="/user/logout">Logout</a></div>
+    
+{{/if}}
+     
   </div>
 </nav>
