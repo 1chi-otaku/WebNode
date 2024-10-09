@@ -4,7 +4,7 @@ import validator from "validator";
 import redirectIfAuthenticated from "../middleware/redirectIfAuthenticated.js";
 import path from "node:path";
 import multer from "multer";
-
+import nodemailer from "nodemailer";
 const storage = multer.diskStorage({
     destination: 'photos/',
     filename: (req, file, cb) => {
@@ -29,6 +29,59 @@ userRoutes.get("/user/signup", redirectIfAuthenticated,  (req, res) => {
 
 userRoutes.get("/users", (req, res) => {
     res.json(users);
+});
+
+userRoutes.get("/feedback", (req, res) => {
+    res.render("feedback");
+});
+
+userRoutes.post("/feedback", (req, res) => {
+    if(!req.body && !req.body.email && !req.body.theme && !req.body.message){
+        res.redirect("/");
+    }
+    console.log("The form is valid");
+
+    const pass = "";
+    const{email,theme,message} = req.body;
+    let trans = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        auth: {
+          user: "mywaifuqueen@gmail.com",
+          pass: pass,
+        },
+        tls: {
+          rejectUnauthorized: true,
+          minVersion: "TLSv1.2",
+        },
+      });
+
+    let mailOpt = {
+        from: "Serhii",
+        to: email,
+        subject: theme,
+        text: message,
+      };
+
+    trans.sendMail(mailOpt, (err, info) => {
+        console.log(err, info);
+        if (err) {
+          result = { status: "Error" };
+        } else {
+          {
+            result = { status: "OK" };
+          }
+        }
+        console.log("Result: ", result);
+        res.redirect("/");
+      });
+
+    res.redirect("/");
+
+     
+
+                          
+     
 });
 
 userRoutes.post("/user/signup", upload.single("file"), async (req, res) => {
