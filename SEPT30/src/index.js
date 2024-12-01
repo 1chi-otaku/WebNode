@@ -19,7 +19,7 @@ const server = express();
 server.use(express.json());
 server.use(cookieParser());
 server.use(session({
-    secret: process.env.SECRET_KEY ,
+    secret: process.env.SESSION_KEY ,
     resave: false,
     saveUninitialized: false,
     cookie:{
